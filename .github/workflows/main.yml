@@ -40,7 +40,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: er-tech/numanga.app
-          path: main
+          ssh-key: ${{ secrets.SSH }}
+          ssh-user: 'russoedu@gmail.com'
 
       - name: Set up Node
         uses: actions/setup-node@v4
