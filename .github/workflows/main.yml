@@ -40,7 +40,7 @@ jobs:
       - name: Check out my other private repo
         uses: actions/checkout@v4
         with:
-          repository: /er-tech/numanga.app
+          repository: er-tech/numanga.app
           ref: main
           token: ${{ secrets.PAT }}
           
