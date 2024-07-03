@@ -45,6 +45,9 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
+          
+      - name: Set APP version
+        run: npm run version:app
 
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
@@ -57,9 +60,6 @@ jobs:
 
       - name: Install frontend dependencies
         run: npm ci # change this to npm or pnpm depending on which one you use
-        
-      - name: Set APP version
-        run: npm run version:app
 
       - name: Npm build
         run: npm run build
