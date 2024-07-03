@@ -39,9 +39,7 @@ jobs:
       - name: Check out my other private repo
         uses: actions/checkout@v4
         with:
-          repository: er-tech/numanga.app
-          ssh-key: ${{ secrets.SSH }}
-          ssh-user: 'russoedu'
+          repository: numanga.app
 
       - name: Set up Node
         uses: actions/setup-node@v4
