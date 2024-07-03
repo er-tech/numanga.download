@@ -41,7 +41,6 @@ jobs:
         with:
           repository: er-tech/numanga.app
           path: main
-          ssh-key: ${{ secrets.SSH }}
 
       - name: Set up Node
         uses: actions/setup-node@v4
