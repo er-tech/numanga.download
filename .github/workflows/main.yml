@@ -17,6 +17,7 @@ permissions:
   packages: read
   deployments: write
   repository-projects: write
+  checks: write
 
 jobs:
   publish-tauri:
@@ -39,9 +40,9 @@ jobs:
       - name: Check out my other private repo
         uses: actions/checkout@v4
         with:
-          repository: er-tech/numanga.app
+          repository: /er-tech/numanga.app
           ref: main
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT }}
           
       - name: Set up Node
         uses: actions/setup-node@v4
