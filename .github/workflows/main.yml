@@ -41,7 +41,7 @@ jobs:
         with:
           repository: er-tech/numanga.app
           ssh-key: ${{ secrets.SSH }}
-          ssh-user: ${{ secrets.SSH }}
+          ssh-user: 'russoedu'
 
       - name: Set up Node
         uses: actions/setup-node@v4
