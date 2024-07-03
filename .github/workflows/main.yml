@@ -35,10 +35,10 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Check out my other private repo
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
         with:
           repository: er-tech/numanga.app
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT }}
 
       - name: Set up Node
         uses: actions/setup-node@v4
