@@ -45,7 +45,9 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          
+      - name: Install frontend dependencies
+        run: ls
+
       - name: Set APP version
         run: npm run version:app
 
