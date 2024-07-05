@@ -39,6 +39,12 @@ jobs:
           repository: er-tech/numanga.app
           ref: dev
           token: ${{ secrets.PAT }}
+      
+      - name: Get commit message
+        run: git show -s --format=%s >> $env:COMMIT_MESSAGE
+
+      - name: Test commit message
+        run: echo ${{ env.COMMIT_MESSAGE }}
           
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -71,6 +77,6 @@ jobs:
         with:
           tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
           releaseName: 'Numanga v__VERSION__'
-          releaseBody: ${{ github.event.head_commit.message }}
+          releaseBody: ${{ env.COMMIT_MESSAGE }}
           releaseDraft: false
           prerelease: false
