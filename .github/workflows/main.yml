@@ -41,10 +41,12 @@ jobs:
           token: ${{ secrets.PAT }}
       
       - name: Get commit message
-        run: git show -s --format=%s >> $env:COMMIT_MESSAGE
+        run: ls
+      # - name: Get commit message
+      #   run: git show -s --format=%s >> $env:COMMIT_MESSAGE
 
-      - name: Test commit message
-        run: echo ${{ env.COMMIT_MESSAGE }}
+      # - name: Test commit message
+      #   run: echo ${{ env.COMMIT_MESSAGE }}
           
       - name: Set up Node
         uses: actions/setup-node@v4
