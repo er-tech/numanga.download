@@ -2,9 +2,12 @@
 name: Deploy to GitHub Pages and publish apps
 
 on:
-  workflow_dispatch: 
-  repository_dispatch:
-    types: [trigger-workflow]
+  workflow_dispatch:
+    inputs:
+      RELEASE:
+        description: 'Release name'
+        required: false
+        type: string
 
 # Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
 permissions:
@@ -70,6 +73,6 @@ jobs:
         with:
           tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
           releaseName: 'Numanga v__VERSION__'
-          releaseBody: ${{ vars.RELEASE }}
+          releaseBody: ${{ inputs.RELEASE }}
           releaseDraft: false
           prerelease: false
