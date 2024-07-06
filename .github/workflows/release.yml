@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   publish-tauri:
-    name: Publish Tauri apps
+    name: Release Tauri apps
     permissions:
       contents: write
     strategy:
