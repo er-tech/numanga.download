@@ -64,8 +64,9 @@ jobs:
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
           TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
         with:
+          appName: NumAnga
           tagName: v__VERSION__
-          releaseName: 'Numanga v__VERSION__'
+          releaseName: 'NumAnga v__VERSION__'
           releaseBody: ${{ vars.RELEASE }}
           releaseDraft: false
           prerelease: false
