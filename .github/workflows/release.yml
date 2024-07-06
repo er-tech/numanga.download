@@ -4,7 +4,7 @@ name: Deploy to GitHub Pages and publish apps
 on:
   workflow_dispatch:
     inputs:
-      RELEASE:
+      releaseName:
         description: 'Release name'
         required: false
         type: string
@@ -73,6 +73,6 @@ jobs:
         with:
           tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
           releaseName: 'Numanga v__VERSION__'
-          releaseBody: ${{ inputs.RELEASE }}
+          releaseBody: ${{ inputs.releaseName }}
           releaseDraft: false
           prerelease: false
