@@ -70,8 +70,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
           TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+          MACOSX_DEPLOYMENT_TARGET: 10.23.0
         with:
-          appName: NumAnga
           tagName: v__VERSION__
           releaseName: 'NumAnga v__VERSION__'
           releaseBody: ${{ vars.RELEASE }}
