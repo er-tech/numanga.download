@@ -58,12 +58,6 @@ jobs:
 
       - name: Install Node dependencies
         run: npm ci # change this to npm or pnpm depending on which one you use
-        
-      # - name: Set APP version
-      #   run: npm run version:app
-
-      # - name: Npm build
-      #   run: npm run build
 
       - name: Compile and release app
         uses: tauri-apps/tauri-action@v0
@@ -82,4 +76,3 @@ jobs:
           includeDebug: true
           includeRelease: true
           includeUpdaterJson: true
-          updaterJsonPreferNsis: false
