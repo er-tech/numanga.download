@@ -80,9 +80,29 @@ jobs:
       - name: Install Node dependencies
         run: npm ci
 
-      - name: Build and release Electron App
-        uses: samuelmeuli/action-electron-builder@v1.6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          release: ${{ env.PACKAGE_VERSION }}
-          build_script_name: preapp:build
+      - name: Build Electron Apps
+        run: npm run app:build
+      
+      - name: View results
+        run: ls release
+
+      #   if: matrix.platform == 'ubuntu-22.04'
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+      # - name: Upload binaries to release
+      #   uses: svenstaro/upload-release-action@v2
+      #   with:
+      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #     file: release/mything
+      #     asset_name: mything
+      #     tag: ${{ github.ref }}
+      #     overwrite: true
+      #     body: "This is my release text"
+      # - name: Release
+      #   uses: softprops/action-gh-release@v2
+      #   if: startsWith(github.ref, 'refs/tags/')
+      #   with:
+      #     files: |
+      #       Release.txt
+      #       LICENSE
