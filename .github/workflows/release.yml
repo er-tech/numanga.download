@@ -10,22 +10,57 @@ permissions:
   deployments: write
 
 jobs:
-  publish-tauri:
-    name: Release Tauri apps
+  create-release:
+    name: Create new release
+    runs-on: ubuntu-latest
+    outputs:
+      PACKAGE_VERSION: ${{ steps.set-version.outputs.PACKAGE_VERSION }}
+
+    steps:
+      - name: Check out numanga.app repo
+        uses: actions/checkout@v4
+        with:
+          repository: er-tech/numanga.app
+          ref: main
+          token: ${{ secrets.PAT }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Get version from package.json
+        id: set-version
+        run: node -p -e '`PACKAGE_VERSION=${require("./package.json").version}`' >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1.1.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGE_VERSION: ${{ steps.set-version.outputs.PACKAGE_VERSION }}
+        with:
+          tag_name: ${{ env.PACKAGE_VERSION }}
+          release_name: Release ${{ env.PACKAGE_VERSION }}
+          body_path: CHANGELOG.md
+          draft: false
+          prerelease: false
+
+  release-electron:
+    name: Release Electron apps
+    needs: create-release
     permissions:
       contents: write
+    env:
+      PACKAGE_VERSION: ${{ needs.create-release.outputs.PACKAGE_VERSION }}
     strategy:
       fail-fast: true
       matrix:
         include:
           - platform: 'macos-latest'
-            args: '--target aarch64-apple-darwin'
-          - platform: 'macos-latest'
-            args: '--target x86_64-apple-darwin'
           - platform: 'ubuntu-22.04'
-            args: ''
           - platform: 'windows-latest'
-            args: ''
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -33,42 +68,21 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: er-tech/numanga.app
-          ref: dev
+          ref: main
           token: ${{ secrets.PAT }}
-          
+
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
 
-      - name: Install Rust stable
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
-          
-      - name: Install Linux dependencies
-        if: matrix.platform == 'ubuntu-22.04'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
-
       - name: Install Node dependencies
         run: npm ci
 
-      - name: Compile and release app
-        uses: tauri-apps/tauri-action@v0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
-          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
-          MACOSX_DEPLOYMENT_TARGET: 10.23.0
+      - name: Build and release Electron App
+        uses: samuelmeuli/action-electron-builder@v1.6.0
         with:
-          tagName: v__VERSION__
-          releaseName: 'NumAnga v__VERSION__'
-          releaseBody: ${{ vars.RELEASE }}
-          releaseDraft: false
-          prerelease: false
-          args: ${{ matrix.args }}
-          includeRelease: true
-          includeUpdaterJson: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release: ${{ env.PACKAGE_VERSION }}
+          build_script_name: preapp:build
