@@ -54,6 +54,8 @@ jobs:
       contents: write
     env:
       PACKAGE_VERSION: ${{ needs.create-release.outputs.PACKAGE_VERSION }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN : ${{ secrets.GITHUB_TOKEN }}
     strategy:
       fail-fast: true
       matrix:
