@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       PACKAGE_VERSION: ${{ steps.set-version.outputs.PACKAGE_VERSION }}
+      RELEASE_ID: ${{ steps.create_release.outputs.id }}
 
     steps:
       - name: Check out numanga.app repo
@@ -98,6 +99,8 @@ jobs:
 
     steps:
       - name: Publish Release
+        uses: eregon/publish-release@v1
         env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh release edit "${{ env.PACKAGE_VERSION }}" --draft=false
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          release_id: ${{ needs.create-release.outputs.RELEASE_ID }}
